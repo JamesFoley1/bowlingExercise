@@ -15,12 +15,14 @@ const initialState = {
       { id: 9, value1: 0, value2: 0, value3: 0, value4: 0 },
     ],
     total: 0,
+    scoreArray: [0,0,0,0,0,0,0,0,0,0],
     windowWidth: window.innerWidth
 };
 
 class Scoreboard extends Component {
 
     state = initialState;
+
     componentDidMount() {
         window.addEventListener("resize", this.updatePredicate);
     }
@@ -29,6 +31,7 @@ class Scoreboard extends Component {
         window.removeEventListener("resize", this.updatePredicate);
     }
 
+    // updates state with the window width when the window is resized
     updatePredicate = () => {
         this.setState({ windowWidth: window.innerWidth });
     }
@@ -40,7 +43,7 @@ class Scoreboard extends Component {
             ...this.state.scores[id]
         };
         
-        if(event.target.value === 'x' || event.target.value === 'X') {
+        if(event.target.value === 'x' || event.target.value === 'X' || event.target.value == 10) {
             score[value] = 10;
         }
         else {
@@ -56,7 +59,8 @@ class Scoreboard extends Component {
         this.setState({ scores });
     }
 
-    strikeChecker = (id, total) => {
+    // handles the calculations for a strike
+    strikeHandler = (id, total) => {
         total += 10;
         // 9th frame
         if(id === this.state.scores.length-2) {
@@ -112,7 +116,8 @@ class Scoreboard extends Component {
         return total;
     }
 
-    spareChecker = (id, total) => {
+    // handles the calculations for a spare
+    spareHandler = (id, total) => {
         total += 10;
         // next frame contains a strike
         if(this.state.scores[id+1].value1 === 10) {
@@ -130,25 +135,37 @@ class Scoreboard extends Component {
     calculateScore = () => {
         // Check user input against initial state
         let total = 0;
+        
+        const scoreArray = {
+            ...this.state.scoreArray
+        };
+
+        // Alerts user and asks the user for input before attempting calculations
         if(this.state === initialState) {
+            alert("Please enter a score in the appropriate boxes to calculate your score.");
             return;
         }
 
         for(var i = 0; i < this.state.scores.length; i++) {
             // Check strike
             if(this.state.scores[i].value1 === 10) {
-                total = this.strikeChecker(i, total);
+                total = this.strikeHandler(i, total);
+                scoreArray[i] = total;
+                this.setState({ scoreArray });
             }
 
             // Check for spare
             else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value2 === '/') {
-                total = this.spareChecker(i, total);
+                total = this.spareHandler(i, total);
+                scoreArray[i] = total;
+                this.setState({ scoreArray });
             }
 
             // Check spare on last frame
             else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value4 === '/') {
                 total += 10 + parseInt(this.state.scores[i].value2);
-                this.setState({ total });
+                scoreArray[i] = total;
+                this.setState({ total, scoreArray });
                 return;
             }
             // Check to see if input values are in range of 0-9
@@ -160,10 +177,10 @@ class Scoreboard extends Component {
                 else {
                     total += (parseInt(this.state.scores[i].value1) + parseInt(this.state.scores[i].value2));
                 }
-                this.setState({ total });
+                scoreArray[i] = total;
+                this.setState({ total, scoreArray });
             }
         } // end for loop
-        console.log("total " + total);
 
     }
 
@@ -176,6 +193,7 @@ class Scoreboard extends Component {
         // Check window width and determine which scoreboard to render
         if(this.state.windowWidth < 991) {
             return (
+                // Mobile Score Board
                 <div className="scoreboardContainer">
                     <table className="scoreboard">
                         <thead>
@@ -363,11 +381,68 @@ class Scoreboard extends Component {
                         <button className="btn" onClick={() => this.calculateScore()}>Calculate Score</button>
                         <button className="btn" onClick={() => this.reset()}>Reset</button>
                     </div>
+                    <br/>
+                    <div className="scoresContainer">
+                        <h2>Total Score: {this.state.total}</h2>
+                        <table className="scoreboard">
+                            <thead>
+                                <tr>
+                                    <th className="padding">
+                                        <p>Frame 1:</p>
+                                        {this.state.scoreArray[0]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 2:</p>
+                                        {this.state.scoreArray[1]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 3:</p>
+                                        {this.state.scoreArray[2]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 4:</p>
+                                        {this.state.scoreArray[3]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 5:</p>
+                                        {this.state.scoreArray[4]}
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table className="scoreboard">
+                            <thead>
+                                <tr>
+                                    <th className="padding">
+                                        <p>Frame 6:</p>
+                                        {this.state.scoreArray[5]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 7:</p>
+                                        {this.state.scoreArray[6]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 8:</p>
+                                        {this.state.scoreArray[7]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 9:</p>
+                                        {this.state.scoreArray[8]}
+                                    </th>
+                                    <th className="padding">
+                                        <p>Frame 10:</p>
+                                        {this.state.scoreArray[9]}
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             );
         }
         else {
             return (
+                // Desktop Score Board
                 <div className="scoreboardContainer">
                     <table className="scoreboard">
                         <thead>
@@ -454,6 +529,24 @@ class Scoreboard extends Component {
                     <div>
                         <button className="btn" onClick={() => this.calculateScore()}>Calculate Score</button>
                         <button className="btn" onClick={() => this.reset()}>Reset</button>
+                    </div>
+                    <br/>
+                    <div className="scoresContainer">
+                        <h2>Total Score: {this.state.total}</h2>
+                        <table className="scoreboard">
+                            <thead>
+                                <tr>
+                                {Object.keys(this.state.scoreArray).map((id) => {
+                                    return (
+                                        <th className="padding" key={id}>
+                                            <p>Frame {Number(id)+1}:</p>
+                                            {this.state.scoreArray[id]}
+                                        </th>
+                                    )
+                                })}
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             );
