@@ -377,35 +377,38 @@ class Scoreboard extends Component {
                         </tbody>
                     </table>
                     <br/>
+                    {/* button container */}
                     <div>
                         <button className="btn" onClick={() => this.calculateScore()}>Calculate Score</button>
                         <button className="btn" onClick={() => this.reset()}>Reset</button>
                     </div>
                     <br/>
+                    {/* frame score container */}
                     <div className="scoresContainer">
                         <h2>Total Score: {this.state.total}</h2>
                         <table className="scoreboard">
                             <thead>
+                                {/* manually input because .slice method had issues with state object when the state updates */}
                                 <tr>
                                     <th className="padding">
-                                        <p>Frame 1:</p>
-                                        {this.state.scoreArray[0]}
+                                        <p>Frame 1</p>
+                                        <p>Score: {this.state.scoreArray[0]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 2:</p>
-                                        {this.state.scoreArray[1]}
+                                        <p>Frame 2</p>
+                                        <p>Score: {this.state.scoreArray[1]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 3:</p>
-                                        {this.state.scoreArray[2]}
+                                        <p>Frame 3</p>
+                                        <p>Score: {this.state.scoreArray[2]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 4:</p>
-                                        {this.state.scoreArray[3]}
+                                        <p>Frame 4</p>
+                                        <p>Score: {this.state.scoreArray[3]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 5:</p>
-                                        {this.state.scoreArray[4]}
+                                        <p>Frame 5</p>
+                                        <p>Score: {this.state.scoreArray[4]}</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -414,24 +417,24 @@ class Scoreboard extends Component {
                             <thead>
                                 <tr>
                                     <th className="padding">
-                                        <p>Frame 6:</p>
-                                        {this.state.scoreArray[5]}
+                                        <p>Frame 6</p>
+                                        <p>Score: {this.state.scoreArray[5]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 7:</p>
-                                        {this.state.scoreArray[6]}
+                                        <p>Frame 7</p>
+                                        <p>Score: {this.state.scoreArray[6]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 8:</p>
-                                        {this.state.scoreArray[7]}
+                                        <p>Frame 8</p>
+                                        <p>Score: {this.state.scoreArray[7]}</p>
                                     </th>
                                     <th className="padding">
-                                        <p>Frame 9:</p>
-                                        {this.state.scoreArray[8]}
+                                        <p>Frame 9</p>
+                                        <p>Score: {this.state.scoreArray[8]}</p>
                                     </th>
-                                    <th className="padding">
-                                        <p>Frame 10:</p>
-                                        {this.state.scoreArray[9]}
+                                    <th className="paddingLast">
+                                        <p>Frame 10</p>
+                                        <p>Score: {this.state.scoreArray[9]}</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -526,11 +529,13 @@ class Scoreboard extends Component {
                         </tbody>
                     </table>
                     <br/>
+                    {/* button container */}
                     <div>
                         <button className="btn" onClick={() => this.calculateScore()}>Calculate Score</button>
                         <button className="btn" onClick={() => this.reset()}>Reset</button>
                     </div>
                     <br/>
+                    {/* frame score container */}
                     <div className="scoresContainer">
                         <h2>Total Score: {this.state.total}</h2>
                         <table className="scoreboard">
@@ -539,8 +544,8 @@ class Scoreboard extends Component {
                                 {Object.keys(this.state.scoreArray).map((id) => {
                                     return (
                                         <th className="padding" key={id}>
-                                            <p>Frame {Number(id)+1}:</p>
-                                            {this.state.scoreArray[id]}
+                                            <p>Frame {Number(id)+1}</p>
+                                            <p>Score: {this.state.scoreArray[id]}</p>
                                         </th>
                                     )
                                 })}

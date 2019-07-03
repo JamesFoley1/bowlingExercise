@@ -44,6 +44,11 @@ table tr:last-child td:last-child {
     box-sizing: border-box;
 }
 
+.paddingLast {
+    padding: 8px 5px;
+    box-sizing: border-box;
+}
+
     /*#region Table Input styles  */
     .scoreboard input {
         display: inline-block;
