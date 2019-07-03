@@ -5,6 +5,8 @@ This application contains a bowling scoreboard which will calculate values you i
 #### Dependency
 Yarn
 
+https://yarnpkg.com/lang/en/docs/install/
+
 ## Installation
 
 Clone from the github repository
@@ -13,7 +15,7 @@ Navigate to the project directory, then run:
 
 yarn install
 
-npm start
+yarn start
 
 This runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
