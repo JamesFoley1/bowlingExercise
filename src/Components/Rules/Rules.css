@@ -1,0 +1,10 @@
+.rulesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* line-height: 0.5rem; */
+}
+
+.rulesContainer p {
+    line-height: 0;
+}

@@ -1,0 +1,82 @@
+/*#region Scoreboard table styles  */
+.scoreboardContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.scoreboard {
+    border: 1px solid black;
+    width: 100%;
+    height: 120px;
+    border-collapse: collapse;
+}
+
+.scoreboard thead {
+    border-bottom: thin solid black;
+}
+
+.scoreboard tbody tr td:not(:last-child),
+.scoreboard th:not(:last-child) {
+    border-right: thin solid black;
+}
+
+.scoreboard tbody tr td {
+    padding: 0px;
+    vertical-align: top;
+}
+
+/* round table corners */
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+    /*#region Table Input styles  */
+    .scoreboard input {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    }
+
+    .leftInput {
+        margin-top: 5px;
+    }
+
+    .rightInputContainer {
+        outline: thin solid black;
+        float: right;
+        padding: 5px;
+    }
+
+    .scoreboard .bottomInput {
+        width: 40px;
+    }
+    /*#endregion  */
+
+/*#endregion  */
+
+/*#region Button Styles */
+.btn {
+    padding: 8px;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: #0095ff;
+    color: #FFF;
+}
+
+.btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.btn:active {
+    
+    cursor: grabbing;
+}
+/*#endregion  */
