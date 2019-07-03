@@ -3,16 +3,16 @@ import './Scoreboard.css';
 
 const initialState = {
     scores: [
-      { id: 0, value1: 0, value2: 0, value3: 0 },
-      { id: 1, value1: 0, value2: 0, value3: 0 },
-      { id: 2, value1: 0, value2: 0, value3: 0 },
-      { id: 3, value1: 0, value2: 0, value3: 0 },
-      { id: 4, value1: 0, value2: 0, value3: 0 },
-      { id: 5, value1: 0, value2: 0, value3: 0 },
-      { id: 6, value1: 0, value2: 0, value3: 0 },
-      { id: 7, value1: 0, value2: 0, value3: 0 },
-      { id: 8, value1: 0, value2: 0, value3: 0 },
-      { id: 9, value1: 0, value2: 0, value3: 0, value4: 0 },
+      { id: 0, value1: "", value2: "", value3: "" },
+      { id: 1, value1: "", value2: "", value3: "" },
+      { id: 2, value1: "", value2: "", value3: "" },
+      { id: 3, value1: "", value2: "", value3: "" },
+      { id: 4, value1: "", value2: "", value3: "" },
+      { id: 5, value1: "", value2: "", value3: "" },
+      { id: 6, value1: "", value2: "", value3: "" },
+      { id: 7, value1: "", value2: "", value3: "" },
+      { id: 8, value1: "", value2: "", value3: "" },
+      { id: 9, value1: "", value2: "", value3: "", value4: "" },
     ],
     total: 0,
     scoreArray: [0,0,0,0,0,0,0,0,0,0],
@@ -64,7 +64,18 @@ class Scoreboard extends Component {
         total += 10;
         // 9th frame
         if(id === this.state.scores.length-2) {
-            total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+1].value2));
+            // check if next value1 or value2 is empty, set state, return
+            if(this.state.scores[id+1].value1 === "" || this.state.scores[id+1].value2 === "") {
+                this.setState({ total });
+                return total;
+            }
+            // check for spare on final frame
+            if(this.state.scores[id+1].value2 === "/") {
+                total += 10;
+            }
+            else {
+                total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+1].value2));
+            }
             this.setState({ total });
             return total;
         }
@@ -98,8 +109,14 @@ class Scoreboard extends Component {
         else {
             // // If next shot is a strike
             if(this.state.scores[id+1].value1 === 10) {
-                total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+2].value1));
-                this.setState({ total });
+                // checking for invalid or missing input, so we don't display NaN
+                if(this.state.scores[id+1].value1 === "" || this.state.scores[id+2].value1 === "") {
+                    this.setState({ total });
+                }
+                else {
+                    total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+2].value1));
+                    this.setState({ total });
+                }
             }
 
             // If next shot is a spare
@@ -109,8 +126,14 @@ class Scoreboard extends Component {
             }
 
             else {
-                total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+1].value2));
-                this.setState({ total });
+                // checking for invalid or missing input, so we don't display NaN
+                if(this.state.scores[id+1].value2 === "") {
+                    this.setState({ total });
+                }
+                else {
+                    total += (parseInt(this.state.scores[id+1].value1) + parseInt(this.state.scores[id+1].value2));
+                    this.setState({ total });
+                }
             }
         }
         return total;
@@ -124,7 +147,13 @@ class Scoreboard extends Component {
             total += 10;
         }
         else {
-            total += parseInt(this.state.scores[id+1].value1);
+            if(this.state.scores[id+1].value1 === ""){
+                this.setState({ total });
+                return total;
+            }
+            else {
+                total += parseInt(this.state.scores[id+1].value1);
+            }
         }
         this.setState({ total });
         return total;
@@ -148,44 +177,54 @@ class Scoreboard extends Component {
 
         for(var i = 0; i < this.state.scores.length; i++) {
             // Check strike
-            if(this.state.scores[i].value1 === 10) {
-                total = this.strikeHandler(i, total);
-                scoreArray[i] = total;
-                this.setState({ scoreArray });
-            }
+            if(this.state.scores[i].value1 !== "") {
 
-            // Check for spare
-            else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value2 === '/') {
-                total = this.spareHandler(i, total);
-                scoreArray[i] = total;
-                this.setState({ scoreArray });
-            }
-
-            // Check spare on last frame
-            else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value4 === '/') {
-                total += 10 + parseInt(this.state.scores[i].value2);
-                scoreArray[i] = total;
-                this.setState({ total, scoreArray });
-                return;
-            }
-            // Check to see if input values are in range of 0-9
-            else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value2 >= 0 && this.state.scores[i].value2 < 10 ){
-                // Last frame. Using value4 since css rearranges my boxes with dynamic loading
-                if(i === this.state.scores.length-1) {
-                    total += (parseInt(this.state.scores[i].value1) + parseInt(this.state.scores[i].value4));
+                if(this.state.scores[i].value1 === 10) {
+                    total = this.strikeHandler(i, total);
+                    scoreArray[i] = total;
+                    this.setState({ total });
                 }
-                else {
-                    total += (parseInt(this.state.scores[i].value1) + parseInt(this.state.scores[i].value2));
+                
+                // Check for spare
+                else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value2 === '/') {
+                    total = this.spareHandler(i, total);
+                    scoreArray[i] = total;
+                    this.setState({ total });
                 }
-                scoreArray[i] = total;
-                this.setState({ total, scoreArray });
+                
+                // Check spare on last frame
+                else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value4 === '/') {
+                    total += 10 + parseInt(this.state.scores[i].value2);
+                    scoreArray[i] = total;
+                    this.setState({ total });
+                    return;
+                }
+                // Check to see if input values are in range of 0-9
+                else if(this.state.scores[i].value1 >= 0 && this.state.scores[i].value1 < 10 && this.state.scores[i].value2 >= 0 && this.state.scores[i].value2 < 10 ) {
+                    // Last frame. Using value4 since css rearranges my boxes with dynamic loading
+                    if(i === this.state.scores.length-1) {
+                        total += (parseInt(this.state.scores[i].value1) + parseInt(this.state.scores[i].value4));
+                    }
+                    else {
+                        total += (parseInt(this.state.scores[i].value1) + parseInt(this.state.scores[i].value2));
+                    }
+                    scoreArray[i] = total;
+                    this.setState({ total });
+                }
             }
         } // end for loop
-
+        this.setState({ scoreArray })
     }
 
+    // searches document for input fields and resets values
     // reset state to initial state values
     reset = () => {
+        var elements = document.getElementsByTagName("input");
+            for (var i=0; i < elements.length; i++) {
+                if (elements[i].type === "text") {
+                    elements[i].value = "";
+                }
+            }
         this.setState(initialState);
     }
 
@@ -211,13 +250,11 @@ class Scoreboard extends Component {
                                             <input
                                                 className="leftInput"
                                                 type="text"
-                                                value={this.state.scores[id].value1}
                                                 onChange={(e) => this.inputHandler(e, id, "value1")} 
                                             />
                                             <div className="rightInputContainer">
                                                 <input
                                                     type="text"
-                                                    value={this.state.scores[id].value2}
                                                     onChange={(e) => this.inputHandler(e, id, "value2")}
                                                 />
                                             </div>
@@ -232,7 +269,6 @@ class Scoreboard extends Component {
                                             <input
                                                 className="bottomInput"
                                                 type="number"
-                                                value={this.state.scores[id].value3}
                                                 onChange={(e) => this.inputHandler(e, id, "value3")}
                                             />
                                         </td>
@@ -257,13 +293,11 @@ class Scoreboard extends Component {
                                             <input
                                                 className="leftInput"
                                                 type="text"
-                                                value={this.state.scores[Number(id)+3].value1}
                                                 onChange={(e) => this.inputHandler(e, Number(id)+3, "value1")} 
                                             />
                                             <div className="rightInputContainer">
                                                 <input
                                                     type="text"
-                                                    value={this.state.scores[Number(id)+3].value2}
                                                     onChange={(e) => this.inputHandler(e, Number(id)+3, "value2")}
                                                 />
                                             </div>
@@ -278,7 +312,6 @@ class Scoreboard extends Component {
                                             <input
                                                 className="bottomInput"
                                                 type="number"
-                                                value={this.state.scores[Number(id)+3].value3}
                                                 onChange={(e) => this.inputHandler(e, Number(id)+3, "value3")}
                                             />
                                         </td>
@@ -303,13 +336,11 @@ class Scoreboard extends Component {
                                             <input
                                                 className="leftInput"
                                                 type="text"
-                                                value={this.state.scores[Number(id)+6].value1}
                                                 onChange={(e) => this.inputHandler(e, Number(id)+6, "value1")} 
                                             />
                                             <div className="rightInputContainer">
                                                 <input
                                                     type="text"
-                                                    value={this.state.scores[Number(id)+6].value2}
                                                     onChange={(e) => this.inputHandler(e, Number(id)+6, "value2")}
                                                 />
                                             </div>
@@ -324,7 +355,6 @@ class Scoreboard extends Component {
                                             <input
                                                 className="bottomInput"
                                                 type="number"
-                                                value={this.state.scores[Number(id)+6].value3}
                                                 onChange={(e) => this.inputHandler(e, Number(id)+6, "value3")}
                                             />
                                         </td>
@@ -345,20 +375,17 @@ class Scoreboard extends Component {
                                     <input
                                         className="leftInput"
                                         type="text"
-                                        value={this.state.scores[9].value1}
                                         onChange={(e) => this.inputHandler(e, 9, "value1")} 
                                     />
                                     <div className="rightInputContainer">
                                         <input
                                             type="text"
-                                            value={this.state.scores[9].value2}
                                             onChange={(e) => this.inputHandler(e, 9, "value2")}
                                         />
                                     </div>
                                     <div className="rightInputContainer">
                                         <input
                                             type="text"
-                                            value={this.state.scores[9].value4}
                                             onChange={(e) => this.inputHandler(e, 9, "value4")}
                                         />
                                     </div>
@@ -369,7 +396,6 @@ class Scoreboard extends Component {
                                     <input
                                         className="bottomInput"
                                         type="number"
-                                        value={this.state.scores[9].value3}
                                         onChange={(e) => this.inputHandler(e, 9, "value3")}
                                     />
                                 </td>
@@ -471,20 +497,17 @@ class Scoreboard extends Component {
                                                 <input
                                                     className="leftInput"
                                                     type="text"
-                                                    value={this.state.scores[id].value1}
                                                     onChange={(e) => this.inputHandler(e, id, "value1")} 
                                                 />
                                                 <div className="rightInputContainer">
                                                     <input
                                                         type="text"
-                                                        value={this.state.scores[id].value2}
                                                         onChange={(e) => this.inputHandler(e, id, "value2")}
                                                     />
                                                 </div>
                                                 <div className="rightInputContainer">
                                                     <input
                                                         type="text"
-                                                        value={this.state.scores[id].value4}
                                                         onChange={(e) => this.inputHandler(e, id, "value4")}
                                                     />
                                                 </div>
@@ -497,13 +520,11 @@ class Scoreboard extends Component {
                                                 <input
                                                     className="leftInput"
                                                     type="text"
-                                                    value={this.state.scores[id].value1}
                                                     onChange={(e) => this.inputHandler(e, id, "value1")} 
                                                 />
                                                 <div className="rightInputContainer">
                                                     <input
                                                         type="text"
-                                                        value={this.state.scores[id].value2}
                                                         onChange={(e) => this.inputHandler(e, id, "value2")}
                                                     />
                                                 </div>
@@ -519,7 +540,6 @@ class Scoreboard extends Component {
                                             <input
                                                 className="bottomInput"
                                                 type="number"
-                                                value={this.state.scores[id].value3}
                                                 onChange={(e) => this.inputHandler(e, id, "value3")}
                                             />
                                         </td>
