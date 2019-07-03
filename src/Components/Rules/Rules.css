@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* line-height: 0.5rem; */
+    margin-bottom: 30px;
 }
 
-.rulesContainer p {
-    line-height: 0;
+.rulesContainer h2 {
+    align-self: center;
 }

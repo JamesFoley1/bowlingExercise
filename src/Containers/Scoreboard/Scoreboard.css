@@ -80,3 +80,34 @@ table tr:last-child td:last-child {
     cursor: grabbing;
 }
 /*#endregion  */
+
+/*#region Media Queries */
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.2rem;
+    }
+    li, p {
+        font-size: 14px;
+    }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+    .scoreboard:nth-child(4n),
+    .scoreboard:nth-child(4n) .bottomInput {
+        width: 60%;
+    }
+    input {
+        border: 1px solid #dfdfdf;
+    }
+    .leftInput {
+        width: 35% !important;
+    }
+}
+
+/*#endregion  */
