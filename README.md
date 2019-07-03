@@ -7,6 +7,10 @@ Yarn
 
 ## Installation
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 76e9d1db7e1c710d47a7ec1843943834381d1582
 Clone from the github repository
 
 Navigate to the project directory, then run:
